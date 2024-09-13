@@ -3,11 +3,11 @@
             border-collapse: collapse;
             width: auto;
             margin: auto;
-            box-shadow: #2edd4e;
+
             
         }
         th{
-            border: 1px solid black;
+            border: 1px solid darkgray;
             padding: 10px;
             text-align: left;
             background-color: rgb(255, 170, 0);
