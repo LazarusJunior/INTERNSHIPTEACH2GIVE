@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./order.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Checkout-Page</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul><img class="nav-images" src="./images/logo.jpeg" alt=""></ul>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Shop</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Help</a></li>
+            </ul>
+        
+        <div class="account">
+            <span>Account</span>
+            <span>3 items</span>
+            <i class="fa-solid fa-caret-down"></i>
+            <span><img class="nav-images" src="./images/person.png" alt=""></span>
+        </div>
+    </nav>
+    </header>
+
+    <main>
+        <section class="account-details">
+            <div class="account-tracker">
+                <li style="color: blue;"> Account
+                    <span>
+                        &minus;
+                        <i class="fa-solid fa-circle-check"></i>
+                        &minus;
+                    </span>
+                </li>
+                <li>Shipping
+                <span>
+                    &minus;
+                    <i class="fa-solid fa-circle-check"></i>
+                    &minus;
+                </span>   
+                </li>
+                 <li>Payment
+                 </li>
+            </div>
+           <div style="width: 100%; margin-left: 40%;">
+            <h2>Account details</h2>
+           </div>
+
+            <form>
+                <label for="email">Email address</label>
+                <input type="email" id="email" placeholder="Email@myemail.com" required>
+                
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="..............." required>
+            </form>
+            <section class="account-buttons">
+            <button  style="background-color: whitesmoke; border: none;" type="button">Register for account</button>
+            <button class="buttons-logship" style="width: 80px;" type="submit">Login</button>
+            </section>
+            <hr width="100%">
+            <section class="bottom-buttons">
+                
+                <button style="background-color: whitesmoke; border: none;" type="button">Cancel order</button>
+                <button class="buttons-logship" type="button">Shipping Details</button>
+            </section>
+        </section>
+
+        <section class="order-summary">
+            <h2>Order Summary</h2>
+            <div class="headphone">
+                <img style="width: 100%; height: 300px; border-radius: 10px;" src="./images/sony-headphone.jpeg" alt="Sony wireless headphones">
+            </div>
+
+<div style=" display: flex; flex-direction: row; justify-content: space-between; margin: 10px;">
+    <div>
+        <h3>Sony wireless headphones</h3>
+        <p>£320.45</p>
+    </div>
+    <div class="quantity-container">
+        <button class="quantity-btns" style="margin-right: 10px;">-</button>
+        <p >1</p>
+        <button class="quantity-btns" style="margin-left: 10px;">+</button>
+    </div>
+</div>
+
+                    <div class="discount">
+                        <label for="discount">Gift Card / Discount code</label>
+                        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                            <input style="width: 60%;" type="text" id="discount">
+                          <button style="border: 1px solid blue;" class="btn-apply">Apply</button>
+                        </div>
+                        
+                    </div>
+                
+            <div class="totals">
+<div class="price-info">
+    <p>Sub total: </p>
+    <p>£316.55</p>
+</div>
+<div class="price-info">
+    <p>Tax: </p>
+    <p>£3.45</p>
+</div>
+<div class="price-info">
+    <p>Shipping: </p>
+    <p style="color: lightgreen;">Free</p>
+</div>
+<div class="price-info">
+    <p>Total: </p>
+    <p>£320.45</p>
+</div>
+
+            </div>
+        </section>
+    </main>
+</body>
+</html>

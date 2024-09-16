@@ -1,0 +1,19 @@
+{
+  "name": "1.variables",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:dev": "nodemon ./script.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "date-fns": "^3.6.0",
+    "mongodb": "^6.8.1",
+    "nodemon": "^3.1.4"
+  }
+}
