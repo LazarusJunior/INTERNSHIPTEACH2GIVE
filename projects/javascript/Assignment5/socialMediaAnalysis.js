@@ -52,54 +52,36 @@ const users = [
   }
 ];
 
-  function analyzeUserData(users) {
-    const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // One week in milliseconds
-    let activeUsers = 0;
-    let totalPopularPosts = 0;
-    let totalLikes = 0;
-  
-    for (let i = 0; i < users.length; i++) {
-      const user = users[i];
-      let userHasPopularPosts = false;
-  
-      for (let j = 0; j < user.posts.length; j++) {
-        const post = user.posts[j];
-        const postDate = new Date(post.timestamp);
-  
-        // Check if the post is recent and has enough likes
-        if ((new Date() - postDate) <= ONE_WEEK && post.likes >= 10) {
-          userHasPopularPosts = true;
-          totalLikes += post.likes;
-          totalPopularPosts++;
-        }
-      }
-  
-      // If the user has popular posts then count them as active
-      if (userHasPopularPosts) {
-        activeUsers++;
-      }
-    }
-  
-    return {
-      activeUsers: activeUsers,
-      totalPopularPosts: totalPopularPosts,
-      totalLikes: totalLikes
-    };
-  }
-  
-  //calculate average likes
-  const result = analyzeUserData(users);
-  let averageLikesPerUser = 0;
-  
-  if (result.activeUsers > 0) {
-    averageLikesPerUser = result.totalLikes / result.activeUsers;
-  }
-  
+const analyzeUserData = (users, currentDate = new Date()) => {
+  const ONE_WEEK = 7 * 24 * 60 * 60 * 1000; // One week in milliseconds
 
-  console.log({
-    activeUsers: result.activeUsers,
-    totalPopularPosts: result.totalPopularPosts,
-    totalLikes: result.totalLikes,
-    averageLikesPerUser: averageLikesPerUser
-  });
-  
+  const isRecentPost = post => {
+    const postDate = new Date(post.timestamp);
+    return !isNaN(postDate.getTime()) && (currentDate - postDate) <= ONE_WEEK;
+  };
+
+  const isPopularPost = post => post.likes >= 10;
+
+  const activeUsers = users.filter(user => 
+    user.posts.some(post => isRecentPost(post) && isPopularPost(post))
+  );
+
+  const popularPosts = activeUsers.flatMap(user => 
+    user.posts.filter(post => isRecentPost(post) && isPopularPost(post))
+  );
+
+  const totalLikes = popularPosts.reduce((sum, post) => sum + post.likes, 0);
+
+  const result = {
+    activeUsers: activeUsers.length,
+    totalPopularPosts: popularPosts.length,
+    totalLikes: totalLikes,
+    averageLikesPerUser: activeUsers.length > 0 ? totalLikes / activeUsers.length : 0
+  };
+
+  return result;
+};
+
+// Usage example
+const result = analyzeUserData(users);
+console.log(result);

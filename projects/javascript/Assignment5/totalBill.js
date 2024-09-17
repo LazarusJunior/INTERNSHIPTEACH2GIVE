@@ -6,7 +6,7 @@ const availableFoods = [
   ];
   
   const totalBillAbove450 = availableFoods
-    .filter(food => food.price > 450)
-    .reduce((total, food) => total + food.price, 0);
+  .filter(food => food.price > 450)
+  .reduce((total, food) => total + food.price, 0);
   
   console.log(`My total bill for the items above 450 is ${totalBillAbove450}`);
