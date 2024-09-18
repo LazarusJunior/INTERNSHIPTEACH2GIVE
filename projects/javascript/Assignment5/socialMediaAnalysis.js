@@ -82,6 +82,6 @@ const analyzeUserData = (users, currentDate = new Date()) => {
   return result;
 };
 
-// Usage example
+
 const result = analyzeUserData(users);
 console.log(result);
