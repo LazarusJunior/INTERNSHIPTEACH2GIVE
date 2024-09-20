@@ -1,0 +1,143 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
+    padding: 20px;
+    background-color: #f0f8ff; /* Light blue background */
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #47d020; 
+    font-size: 2.5em;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.event-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.event-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid #ffd700; 
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+
+.event-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.event-details {
+    padding: 20px;
+}
+
+.event-title {
+    font-size: 1.3em;
+    margin-bottom: 10px;
+    color: #132916; 
+}
+
+.event-info {
+    font-size: 0.95em;
+    color: #555;
+}
+
+.event-price {
+    font-weight: bold;
+    color: #32cd32; 
+    font-size: 1.1em;
+    margin-top: 10px;
+}
+
+.controls {
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    background-color: #fffaf0; 
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.filter-control, .sort-control {
+    margin: 10px 0;
+}
+
+select, input {
+    padding: 8px;
+    margin-right: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+button {
+    padding: 8px 15px;
+    background-color: #ffd700;; 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #64c639; 
+    transform: scale(1.05);
+}
+
+.favorites {
+    margin-top: 40px;
+}
+
+.favorites h2 {
+    margin-bottom: 20px;
+    color: #9932cc; /* Dark orchid for favorites heading */
+}
+
+@media (max-width: 768px) {
+    .event-list {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    .controls {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@keyframes favoriteAnimation {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.favorite-animation {
+    animation: favoriteAnimation 0.3s ease;
+}

@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Listing</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Event Listing</h1>
+        
+        <div class="controls">
+            <div class="filter-control">
+                <input type="text" id="searchInput" placeholder="Search events...">
+                <select id="locationFilter">
+                    <option value="">All Locations</option>
+                </select>
+                <input type="number" id="minPrice" placeholder="Min Price">
+                <input type="number" id="maxPrice" placeholder="Max Price">
+                <button id="filterButton">Apply Filters</button>
+            </div>
+            <div class="sort-control">
+                <select id="sortSelect">
+                    <option value="dateAsc">Date (Ascending)</option>
+                    <option value="dateDesc">Date (Descending)</option>
+                    <option value="priceAsc">Price (Low to High)</option>
+                    <option value="priceDesc">Price (High to Low)</option>
+                </select>
+                <button id="sortButton">Sort</button>
+            </div>
+        </div>
+
+        <div id="eventList" class="event-list"></div>
+
+        <div class="favorites">
+            <h2>Favorites</h2>
+            <div id="favoritesList" class="event-list"></div>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const eventList = document.getElementById('eventList');
+        const favoritesList = document.getElementById('favoritesList');
+        const searchInput = document.getElementById('searchInput');
+        const locationFilter = document.getElementById('locationFilter');
+        const minPriceInput = document.getElementById('minPrice');
+        const maxPriceInput = document.getElementById('maxPrice');
+        const filterButton = document.getElementById('filterButton');
+        const sortSelect = document.getElementById('sortSelect');
+        const sortButton = document.getElementById('sortButton');
+
+        // State
+        let events = [];
+        let filteredEvents = [];
+        let favorites = [];
+
+        // Fetch events data
+        async function fetchEvents() {
+            try {
+                const response = await fetch('http://localhost:3000/events');
+                events = await response.json();
+                filteredEvents = [...events];
+                initializeApp();
+            } catch (error) {
+                console.error('Error fetching events:', error);
+                eventList.innerHTML = '<p>Error loading events. Please try again later.</p>';
+            }
+        }
+
+        // Initialize app after fetching data
+        function initializeApp() {
+            populateLocationFilter();
+            renderEvents(events, eventList);
+            loadFavoritesFromLocalStorage();
+            addEventListeners();
+        }
+
+        // Helper functions
+        function createEventCard(event, isFavorite = false) {
+            const card = document.createElement('div');
+            card.className = 'event-card';
+            card.innerHTML = `
+                <img src="${event.imageUrl}" alt="${event.title}" class="event-image">
+                <div class="event-details">
+                    <h3 class="event-title">${event.title}</h3>
+                    <p class="event-info">${event.date} | ${event.location}</p>
+                    <p class="event-price">$${event.price}</p>
+                    <button class="favorite-btn">${isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}</button>
+                </div>
+            `;
+
+            const favoriteBtn = card.querySelector('.favorite-btn');
+            favoriteBtn.addEventListener('click', () => toggleFavorite(event, favoriteBtn));
+
+            const img = card.querySelector('.event-image');
+            img.onerror = () => handleImageError(img);
+
+            return card;
+        }
+
+        function toggleFavorite(event, button) {
+            const isFavorite = favorites.some(fav => fav.id === event.id);
+            if (isFavorite) {
+                favorites = favorites.filter(fav => fav.id !== event.id);
+                button.textContent = 'Add to Favorites';
+            } else {
+                favorites.push(event);
+                button.textContent = 'Remove from Favorites';
+            }
+            button.closest('.event-card').classList.add('favorite-animation');
+            updateFavorites();
+        }
+
+        function renderEvents(events, container) {
+            container.innerHTML = '';
+            const fragment = document.createDocumentFragment();
+            events.forEach(event => {
+                const isFavorite = favorites.some(fav => fav.id === event.id);
+                fragment.appendChild(createEventCard(event, isFavorite));
+            });
+            container.appendChild(fragment);
+        }
+
+        function renderFavorites() {
+            renderEvents(favorites, favoritesList);
+        }
+
+        function applyFilters() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedLocation = locationFilter.value;
+            const minPrice = parseFloat(minPriceInput.value) || 0;
+            const maxPrice = parseFloat(maxPriceInput.value) || Infinity;
+
+            filteredEvents = events.filter(event => 
+                event.title.toLowerCase().includes(searchTerm) &&
+                (selectedLocation === '' || event.location === selectedLocation) &&
+                event.price >= minPrice && event.price <= maxPrice
+            );
+
+            renderEvents(filteredEvents, eventList);
+        }
+
+        function sortEvents() {
+            const sortValue = sortSelect.value;
+            filteredEvents.sort((a, b) => {
+                switch (sortValue) {
+                    case 'dateAsc':
+                        return new Date(a.date) - new Date(b.date);
+                    case 'dateDesc':
+                        return new Date(b.date) - new Date(a.date);
+                    case 'priceAsc':
+                        return a.price - b.price;
+                    case 'priceDesc':
+                        return b.price - a.price;
+                    default:
+                        return 0;
+                }
+            });
+            renderEvents(filteredEvents, eventList);
+        }
+
+        function populateLocationFilter() {
+            const locations = [...new Set(events.map(event => event.location))];
+            locations.forEach(location => {
+                const option = document.createElement('option');
+                option.value = location;
+                option.textContent = location;
+                locationFilter.appendChild(option);
+            });
+        }
+
+        function addEventListeners() {
+            filterButton.addEventListener('click', applyFilters);
+            sortButton.addEventListener('click', sortEvents);
+            searchInput.addEventListener('input', debounce(() => {
+                applyFilters();
+            }, 300));
+        }
+
+        // Performance optimization
+        function debounce(func, delay) {
+            let timeoutId;
+            return function (...args) {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => func.apply(this, args), delay);
+            };
+        }
+
+        // Error handling for image loading
+        function handleImageError(img) {
+            console.error('Error loading image:', img.src);
+            img.src = 'https://via.placeholder.com/300x200?text=Image+Not+Available';
+            img.alt = 'Image not available';
+        }
+
+        // Local storage for favorites
+        function saveFavoritesToLocalStorage() {
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+        }
+
+        function loadFavoritesFromLocalStorage() {
+            const storedFavorites = localStorage.getItem('favorites');
+            if (storedFavorites) {
+                favorites = JSON.parse(storedFavorites);
+                renderFavorites();
+            }
+        }
+
+        // Update favorites
+        function updateFavorites() {
+            renderFavorites();
+            saveFavoritesToLocalStorage();
+        }
+
+        // Start the application
+        fetchEvents();
+    </script>
+</body>
+</html>
