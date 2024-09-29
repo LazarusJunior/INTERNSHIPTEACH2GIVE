@@ -27,8 +27,9 @@ function calculateAreaWithDestructuring1(shape: Shape): number {
 const circle1: Circle = { kind: 'circle', radius: 5 };
 const square1: Square = { kind: 'square', sideLength: 4 };
 
-console.log('Exercise 1 - Circle Area:', calculateAreaWithDestructuring(circle));
-console.log('Exercise 1 - Square Area:', calculateAreaWithDestructuring(square));
+console.log('Exercise 1 - Circle Area:', calculateAreaWithDestructuring1(circle1));
+console.log('Exercise 1 - Square Area:', calculateAreaWithDestructuring1(square1));
+
 
 // Exercise 2: Narrowing a Discriminated Union with a Switch Statement
 function calculateAreaWithSwitch1(shape: Shape): number {
@@ -41,8 +42,8 @@ function calculateAreaWithSwitch1(shape: Shape): number {
 }
 
 // Test for Exercise 2
-console.log('Exercise 2 - Circle Area:', calculateAreaWithSwitch(circle));
-console.log('Exercise 2 - Square Area:', calculateAreaWithSwitch(square));
+console.log('Exercise 2 - Circle Area:', calculateAreaWithSwitch1(circle1));
+console.log('Exercise 2 - Square Area:', calculateAreaWithSwitch1(square1));
 
 // Exercise 3: Discriminated Tuples
 type User = {
@@ -70,7 +71,7 @@ async function fetchData1(): Promise<APIResponse> {
 
 // Test for Exercise 3
 async function testFetchData1() {
-  const [status, value] = await fetchData();
+  const [status, value] = await fetchData1();
 
   if (status === 'success') {
     console.log('Exercise 3 - Success:', value);
@@ -102,9 +103,6 @@ const defaultCircle4 = { radius: 5 };
 const explicitCircle4: CircleWithOptionalKind = { kind: 'circle', radius: 5 };
 const squareExercise4: Square = { kind: 'square', sideLength: 4 };
 
-console.log('Exercise 4 - Default Circle Area:', calculateAreaWithDefault(defaultCircle4));
-console.log('Exercise 4 - Explicit Circle Area:', calculateAreaWithDefault(explicitCircle4));
-console.log('Exercise 4 - Square Area:', calculateAreaWithDefault(squareExercise4));
-
-// Run all tests
-console.log('Run this file to see the console output for each exercise.');
+console.log('Exercise 4 - Default Circle Area:', calculateAreaWithDefault2(defaultCircle4));
+console.log('Exercise 4 - Explicit Circle Area:', calculateAreaWithDefault2(explicitCircle4));
+console.log('Exercise 4 - Square Area:', calculateAreaWithDefault2(squareExercise4));
