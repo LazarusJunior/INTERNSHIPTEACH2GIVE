@@ -3,7 +3,7 @@ type BaseEntity = {
   createdAt: Date;
 };
 
-type User = BaseEntity & {
+type User1 = BaseEntity & {
   name: string;
   email: string;
 };

@@ -6,4 +6,4 @@ const acceptsCallback = (callback) => {
 const returnString = () => {
     return "Hello!";
 };
-acceptsCallback(returnString); // Now this works without error
+acceptsCallback(returnString); 

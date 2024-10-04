@@ -8,4 +8,4 @@ const acceptsCallback = (callback: () => void) => {
     return "Hello!";
   };
   
-  acceptsCallback(returnString); // Now this works without error
+  acceptsCallback(returnString); 
