@@ -1,0 +1,6 @@
+{
+  "databaseURL": "https://LKJ-s-workspace-vvblrf.us-east-1.xata.sh/db/Events",
+  "codegen": {
+    "output": "src/xata.ts"
+  }
+}
