@@ -1,27 +1,18 @@
-// xata.ts
-
 import { buildClient } from "@xata.io/client";
-import type {
-  BaseClientOptions,
-  SchemaInference,
-  XataRecord,
-  BaseSchema,
-} from "@xata.io/client";
+import type { BaseClientOptions, SchemaInference, XataRecord } from "@xata.io/client";
 import dotenv from 'dotenv';
 
-// Load environment variables from .env file
 dotenv.config();
 
-// Define the schema for your tables
-const tables: readonly BaseSchema[] = [
+const tables = [
   {
     name: 'users',
     columns: [
       { name: 'email', type: 'string' },
       { name: 'password', type: 'string' },
       { name: 'name', type: 'string' },
-      { name: 'school', type: 'string' }, // New column
-      { name: 'sport', type: 'string' }, // New column
+      { name: 'school', type: 'string' },
+      { name: 'sport', type: 'string' }
     ]
   }
 ] as const;
@@ -29,13 +20,12 @@ const tables: readonly BaseSchema[] = [
 export type SchemaTables = typeof tables;
 export type InferredTypes = SchemaInference<SchemaTables>;
 
-// Define the database schema
 export type UserRecord = XataRecord & {
   email: string;
   password: string;
   name: string;
-  school: string; // New column
-  sport: string; // New column
+  school: string;
+  sport: string;
 };
 
 export type DatabaseSchema = {
@@ -45,8 +35,8 @@ export type DatabaseSchema = {
 const DatabaseClient = buildClient();
 
 const defaultOptions = {
-  databaseURL: process.env.DATABASE_URL, 
-  apiKey: process.env.XATA_API_KEY, 
+  databaseURL: process.env.DATABASE_URL,
+  apiKey: process.env.XATA_API_KEY,
   branch: process.env.XATA_BRANCH,
 };
 
@@ -59,8 +49,7 @@ export class XataClient extends DatabaseClient<DatabaseSchema> {
 let instance: XataClient | undefined = undefined;
 
 export const getXataClient = () => {
-    if (!instance) {
-        instance = new XataClient();
-    }
-    return instance;
+  if (instance) return instance;
+  instance = new XataClient();
+  return instance;
 };
