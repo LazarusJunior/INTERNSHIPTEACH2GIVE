@@ -19,7 +19,9 @@ const tables: readonly BaseSchema[] = [
     columns: [
       { name: 'email', type: 'string' },
       { name: 'password', type: 'string' },
-      { name: 'name', type: 'string' }
+      { name: 'name', type: 'string' },
+      { name: 'school', type: 'string' }, // New column
+      { name: 'sport', type: 'string' }, // New column
     ]
   }
 ] as const;
@@ -32,6 +34,8 @@ export type UserRecord = XataRecord & {
   email: string;
   password: string;
   name: string;
+  school: string; // New column
+  sport: string; // New column
 };
 
 export type DatabaseSchema = {
@@ -55,8 +59,8 @@ export class XataClient extends DatabaseClient<DatabaseSchema> {
 let instance: XataClient | undefined = undefined;
 
 export const getXataClient = () => {
-  if (instance) return instance;
-
-  instance = new XataClient();
-  return instance;
+    if (!instance) {
+        instance = new XataClient();
+    }
+    return instance;
 };
